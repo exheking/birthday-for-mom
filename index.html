@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>給最棒的媽咪・小饅頭與爸爸的愛心冒險</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 背景飄浮微光粒子畫布 -->
+  <canvas id="ambient-canvas"></canvas>
+
+  <!-- 彩色碎紙屑特效 Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- 提示訊息 Toast 浮動條 -->
+  <div id="game-toast" class="game-toast"></div>
+
+  <!-- ================= 密碼解鎖屏 (Passcode: 1009) ================= -->
+  <div id="lock-screen" class="lock-screen">
+    <div class="lock-card" id="lock-card">
+      <div class="lock-icon-wrap">
+        <span class="lock-icon">🔐</span>
+      </div>
+      <h2 class="lock-title">專屬於最美媽咪的幸福秘密</h2>
+      <p class="lock-subtitle">請輸入專屬通關密碼開啟冒險 💖<br><span class="lock-hint" id="lock-hint-text">（小提示：媽咪最特別的幸運紀念日 🎂）</span></p>
+
+      <!-- 4 位數 PIN 碼顯示格 -->
+      <div class="pin-display-wrap" id="pin-display">
+        <div class="pin-dot" id="dot-0"></div>
+        <div class="pin-dot" id="dot-1"></div>
+        <div class="pin-dot" id="dot-2"></div>
+        <div class="pin-dot" id="dot-3"></div>
+      </div>
+
+      <div class="lock-error-msg" id="lock-error-msg">密碼錯誤，請再試一次唷 ❤️</div>
+
+      <!-- 虛擬數字鍵盤 -->
+      <div class="keypad-grid" id="lock-keypad">
+        <button class="key-btn" data-key="1">1</button>
+        <button class="key-btn" data-key="2">2</button>
+        <button class="key-btn" data-key="3">3</button>
+        <button class="key-btn" data-key="4">4</button>
+        <button class="key-btn" data-key="5">5</button>
+        <button class="key-btn" data-key="6">6</button>
+        <button class="key-btn" data-key="7">7</button>
+        <button class="key-btn" data-key="8">8</button>
+        <button class="key-btn" data-key="9">9</button>
+        <button class="key-btn key-action" data-action="clear" title="清除">C</button>
+        <button class="key-btn" data-key="0">0</button>
+        <button class="key-btn key-action" data-action="backspace" title="倒退">⌫</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 頂部吸頂關卡步進導航列 (Stage Stepper) -->
+  <header class="game-header sticky-header" id="main-header">
+    <nav class="stage-stepper" id="stage-stepper">
+      <button class="step-btn active" data-stage="0" title="首頁">
+        <span class="step-icon">🏠</span>
+        <span class="step-label">首頁</span>
+      </button>
+      <div class="step-arrow">›</div>
+      <button class="step-btn" data-stage="1" title="第 1 關：接小饅頭">
+        <span class="step-badge">1</span>
+        <span class="step-label">接小饅頭</span>
+      </button>
+      <div class="step-arrow">›</div>
+      <button class="step-btn locked" data-stage="2" title="第 2 關：母子回憶 (未解鎖)">
+        <span class="step-badge">2</span>
+        <span class="step-label">母子回憶</span>
+      </button>
+      <div class="step-arrow">›</div>
+      <button class="step-btn locked" data-stage="3" title="第 3 關：拼圖 (未解鎖)">
+        <span class="step-badge">3</span>
+        <span class="step-label">最美拼圖</span>
+      </button>
+      <div class="step-arrow">›</div>
+      <button class="step-btn locked" data-stage="4" title="終極彩蛋：專屬好禮 (未解鎖)">
+        <span class="step-badge">🎁</span>
+        <span class="step-label">專屬好禮</span>
+      </button>
+    </nav>
+    <div class="header-controls">
+      <button class="icon-btn" id="sfx-toggle" title="音效開關">🔔</button>
+      <button class="icon-btn" id="bgm-toggle" title="背景音樂">🎵</button>
+    </div>
+  </header>
+
+  <!-- 主容器 (闖關制：一關一關過) -->
+  <main id="app-container">
+
+    <!-- ================= 0. 歡迎首頁區塊 ================= -->
+    <section class="stage-screen active" id="stage-0">
+      <div class="welcome-hero">
+        <div class="hero-avatar-wrap">
+          <img src="images/puzzle_mom_baby_sq.jpg" alt="最美媽咪與小饅頭" class="hero-avatar-img">
+          <div class="hero-crown-badge">👑</div>
+        </div>
+        <h1 class="welcome-title" id="welcome-title">親愛的媽咪，生日快樂！</h1>
+        <p class="welcome-subtitle" id="welcome-sub">小饅頭與爸爸最愛的超人媽咪・專屬於妳的幸福時光冒險 ❤️</p>
+      </div>
+
+      <div class="stage-preview-list">
+        <div class="preview-card" data-preview-stage="1">
+          <div class="preview-badge">
+            <img src="images/preview_stage1.jpg" alt="第 1 關 小饅頭萌照" class="preview-badge-img">
+          </div>
+          <div class="preview-info">
+            <h4>第 1 關：接住小饅頭所有的愛</h4>
+            <p>推著 Q 版嬰兒車，慢慢接住小饅頭超萌大卡片（500 分通關）！</p>
+          </div>
+          <span class="preview-status status-ready">進入 ➔</span>
+        </div>
+        <div class="preview-card" data-preview-stage="2">
+          <div class="preview-badge">
+            <img src="images/preview_stage2.jpg" alt="第 2 關 母子時光" class="preview-badge-img">
+          </div>
+          <div class="preview-info">
+            <h4>第 2 關：母子時光記憶寶盒</h4>
+            <p>翻開 3 大篇章記憶卡牌，解鎖 18 段溫柔守護的感動故事！</p>
+          </div>
+          <span class="preview-status status-locked">🔒 待解鎖</span>
+        </div>
+        <div class="preview-card" data-preview-stage="3">
+          <div class="preview-badge">
+            <img src="images/preview_stage3.jpg" alt="第 3 關 拼圖合照" class="preview-badge-img">
+          </div>
+          <div class="preview-info">
+            <h4>第 3 關：拼出最美母子時光</h4>
+            <p>親手拼出媽咪與小饅頭 120 天甜蜜合照，解鎖終極驚喜！</p>
+          </div>
+          <span class="preview-status status-locked">🔒 待解鎖</span>
+        </div>
+        <div class="preview-card" data-preview-stage="4">
+          <div class="preview-badge">
+            <img src="images/preview_stage4.jpg" alt="終極彩蛋 登記甜蜜照" class="preview-badge-img">
+          </div>
+          <div class="preview-info">
+            <h4>終極彩蛋：真情告白與寵妻兌換券</h4>
+            <p>拆開火漆信封，領取 5 張專屬愛妻放鬆兌換券！</p>
+          </div>
+          <span class="preview-status status-locked">🔒 待解鎖</span>
+        </div>
+      </div>
+
+      <button class="action-btn" id="start-game-btn">
+        開啟愛的冒險 💖 ➔
+      </button>
+    </section>
+
+    <!-- ================= 1. 第一關：接住小饅頭所有的愛 ================= -->
+    <section class="stage-screen" id="stage-1">
+      <div class="stage-header-text">
+        <div class="section-tag">Stage 1・溫柔慢速</div>
+        <h3 id="s1-title">第一關：接住小饅頭所有的愛 👶🍼</h3>
+        <p id="s1-intro">緩緩飄落著小饅頭的超萌拍立得大卡片～推著推車慢慢接住寶寶所有的愛！</p>
+      </div>
+
+      <div class="game-hud">
+        <div class="hud-score">
+          愛心值：<span id="catch-score">0</span> / <span id="catch-target">500</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="catch-progress"></div>
+        </div>
+      </div>
+
+      <div id="catch-canvas-container">
+        <canvas id="catch-canvas"></canvas>
+        <!-- 畫布開始覆蓋層 (換成小寶寶昊澄・小饅頭的真實萌照) -->
+        <div id="catch-start-overlay" class="canvas-overlay">
+          <div class="overlay-avatar-wrap">
+            <img src="images/baby_card_1.jpg" alt="小饅頭" class="overlay-avatar-img">
+            <div class="avatar-badge">💖</div>
+          </div>
+          <p class="overlay-text">小饅頭準備好囉！</p>
+          <button class="overlay-btn" id="start-catch-btn">點擊開始接愛心 💖</button>
+        </div>
+      </div>
+      <p class="control-tips">📱 手指左右滑動推車 / 💻 使用鍵盤左右鍵移動</p>
+
+      <!-- 第一關通關後原地展開的客廳回憶卡與通關按鈕 -->
+      <div id="s1-clear-banner" class="clear-banner" style="display: none;">
+        <div class="clear-banner-card">
+          <div class="banner-badge">🎉 500 分達成！客廳回憶已珍藏 ✨</div>
+          <img src="images/home_living_room.jpg" alt="溫馨小天地" class="banner-photo">
+          <h4 class="banner-title">🏡 我們的溫馨育兒小天地</h4>
+          <p class="banner-caption">客廳的地墊、沙發、散落的玩具……這裡寫滿了妳日夜陪伴小饅頭長大的點點滴滴。最棒的媽咪，妳辛苦了，我們最愛妳！❤️</p>
+        </div>
+        <button class="action-btn next-stage-btn" id="s1-next-btn">
+          太棒了！解鎖並進入第 2 關母子回憶錄 ➔
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= 2. 第二關：母子時光記憶寶盒 ================= -->
+    <section class="stage-screen" id="stage-2">
+      <div class="stage-header-text">
+        <div class="section-tag">Stage 2・翻牌記憶</div>
+        <h3 id="s2-title">第二關：母子時光記憶寶盒 📸</h3>
+        <p id="s2-intro">每翻開一對相同照片，就在下方點亮一段母子相伴的珍貴回憶～</p>
+      </div>
+
+      <!-- 3 大篇章切換 Tabs -->
+      <div class="chapter-tabs" id="chapter-tabs">
+        <button class="chapter-tab active" data-level="0">
+          <span class="tab-badge">篇章 1</span> 初生相伴 🍼
+        </button>
+        <button class="chapter-tab" data-level="1">
+          <span class="tab-badge">篇章 2</span> 甜蜜日常 🌸
+        </button>
+        <button class="chapter-tab" data-level="2">
+          <span class="tab-badge">篇章 3</span> 百天里程碑 ✨
+        </button>
+      </div>
+
+      <div class="game-hud s2-hud">
+        <div class="hud-score">
+          <span id="s2-level-name">初生相伴・天使降臨 🍼</span>
+          <span class="hud-divider">|</span>
+          已尋獲：<span id="matched-pairs-count">0</span> / 6 對
+        </div>
+        <div class="s2-controls">
+          <button class="helper-btn" id="s2-restart-level-btn" title="重新記憶此篇章">🔄 重新記憶</button>
+          <button class="helper-btn" id="s2-peek-btn" title="偷看 3 秒">👀 偷看 3 秒</button>
+        </div>
+      </div>
+
+      <!-- 記憶倒數橫條 -->
+      <div class="countdown-banner" id="memory-countdown-banner" style="display: none;">
+        <div class="countdown-banner-inner">
+          <span class="countdown-icon">👀</span>
+          <span class="countdown-text" id="countdown-text">快速記憶時間：<strong id="countdown-num">5</strong> 秒</span>
+          <div class="countdown-bar-wrap">
+            <div class="countdown-bar-fill" id="countdown-bar-fill"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12 張卡牌網格 -->
+      <div class="cards-grid" id="cards-grid">
+        <!-- 由 JavaScript 動態生成 -->
+      </div>
+
+      <!-- 最新解鎖回憶展示區 (頁面內無遮擋展開) -->
+      <div class="inline-showcase-wrap" id="inline-showcase-wrap" style="display: none;">
+        <div class="inline-showcase-header">
+          <span class="sparkle-icon">✨</span>
+          <span>最新珍藏回憶</span>
+        </div>
+        <div class="inline-showcase-card">
+          <img src="" alt="回憶照片" class="inline-showcase-photo" id="showcase-photo">
+          <div class="inline-showcase-info">
+            <div class="inline-showcase-date" id="showcase-date">日期</div>
+            <p class="inline-showcase-caption" id="showcase-caption">內容小語</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 本篇章已解鎖回憶迷你相簿 -->
+      <div class="unlocked-album-section">
+        <div class="album-heading">
+          <span>📖</span> <span id="album-title-text">本篇章已珍藏相簿 (點擊可重溫小語)</span>
+        </div>
+        <div class="unlocked-album-grid" id="unlocked-album-grid">
+          <!-- 6 個回憶縮圖位 -->
+        </div>
+      </div>
+
+      <!-- 篇章全通關提示卡片 -->
+      <div id="s2-level-complete-card" class="level-complete-card" style="display: none;">
+        <div class="complete-icon">🎉</div>
+        <h4 id="s2-complete-title" class="complete-title">篇章 1 全部回憶已珍藏！</h4>
+        <p id="s2-complete-desc" class="complete-desc">太厲害了！已收錄 6 段溫馨母子時光～</p>
+        <div class="complete-btn-group">
+          <button class="action-btn next-chapter-btn" id="s2-next-chapter-btn">切換下一篇章 ➔</button>
+        </div>
+      </div>
+
+      <!-- 解鎖進入第 3 關大按鈕 (配對完成後解鎖顯示) -->
+      <button class="action-btn next-stage-btn" id="s2-next-btn" style="display: none; margin-top: 18px;">
+        太棒了！解鎖並進入第 3 關最美拼圖 ➔
+      </button>
+    </section>
+
+    <!-- ================= 3. 第三關：母子拼圖 (Jigsaw Puzzle) ================= -->
+    <section class="stage-screen" id="stage-3">
+      <div class="stage-header-text">
+        <div class="section-tag">Stage 3・甜蜜合照</div>
+        <h3 id="s3-title">第三關：拼出最美母子時光 🧩</h3>
+        <p id="s3-intro">點擊兩塊拼圖互換位置，拼出媽咪與小饅頭 120 天紀念的甜蜜合照！</p>
+      </div>
+
+      <div class="puzzle-board-wrapper">
+        <div class="puzzle-board" id="puzzle-board">
+          <!-- 3x3 拼圖塊由 JS 生成 -->
+        </div>
+      </div>
+
+      <div class="puzzle-controls">
+        <span>原圖參考：</span>
+        <img src="images/puzzle_mom_baby_sq.jpg" id="puzzle-hint-img" class="hint-thumbnail" alt="原圖預覽" title="點擊查看全圖">
+        <button class="icon-btn" id="puzzle-auto-btn" style="font-size: 12px; width: auto; border-radius: 12px; padding: 4px 10px;" title="遇到困難點這裡">💡 一鍵通關</button>
+      </div>
+
+      <!-- 拼圖完成提示 -->
+      <div id="s3-clear-banner" class="clear-banner" style="display: none; margin-top: 16px;">
+        <div class="clear-banner-card">
+          <div class="banner-badge">🎉 拼圖完美完成！❤️</div>
+          <p class="banner-caption" style="margin-bottom: 0;">太棒了！看著妳抱著小饅頭幸福微笑的模樣，就是我們家最美的風景！</p>
+        </div>
+        <button class="action-btn next-stage-btn" id="s3-next-btn" style="margin-top: 15px;">
+          💖 全部通關！解鎖老公與小饅頭的專屬心意信件 💌 ➔
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= 4. 終極彩蛋：情書與兌換券 (Grand Finale) ================= -->
+    <section class="stage-screen" id="stage-4">
+      <div class="finale-container">
+        <div class="section-tag" style="background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%); color: #fff;">Grand Finale</div>
+        <h2 class="celebration-title">🎉 獻給全世界最棒的媽咪 ❤️</h2>
+        <p class="celebration-sub">小饅頭與爸爸永遠最愛妳・生日快樂！</p>
+
+        <!-- 儀式感火漆信封 -->
+        <div class="envelope-container" id="envelope-box">
+          <div class="envelope-wrapper">
+            <div class="wax-seal" id="wax-seal-btn" title="輕觸火漆封蠟展開信件">💌</div>
+            <div class="letter-body" id="letter-content">
+              <!-- 由 JS 動態注入設定檔的情書內容 -->
+            </div>
+            <div class="letter-signature-block">
+              <span style="font-weight: 700; color: #a64c61; font-size: 14px;">愛妳的老公與昊澄（小饅頭） ❤️</span>
+              <div class="husband-stamp">寵妻<br>印記</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 專屬好禮兌換券專區 -->
+        <div class="coupons-section">
+          <div class="coupons-heading">
+            <span>🎁</span> 媽咪專屬・愛妻舒壓好禮兌換券 (點擊立即兌換)
+          </div>
+          <div class="coupons-list" id="coupons-list">
+            <!-- 由 JS 動態生成兌換券 -->
+          </div>
+        </div>
+
+        <!-- 溫馨尾聲 -->
+        <div class="finale-footer-card">
+          <div class="footer-heart">💖</div>
+          <p class="footer-text">願全世界最溫柔美麗的媽咪，天天幸福開心！</p>
+          <button class="action-btn replay-game-btn" id="replay-btn">
+            再重溫一次遊戲 🔄
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 背景音樂播放器 -->
+  <audio id="bgm-player" loop preload="auto"></audio>
+
+  <!-- 載入自訂設定與主程式腳本 -->
+  <script src="config.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
