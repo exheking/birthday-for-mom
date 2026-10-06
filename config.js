@@ -20,7 +20,7 @@ window.GAME_CONFIG = {
   // 3. 第一關：接住小饅頭所有的愛 (Catching Game)
   stage1: {
     title: "第一關：接住小饅頭所有的愛 👶🍼",
-    intro: "在我們溫馨的小窩裡，緩緩飄落著小饅頭一張張可愛萌照大卡片～推著推車慢慢接住寶寶所有的愛！",
+    intro: "在我們溫馨的小窩裡，飄落著小饅頭一張張可愛萌照大卡片～推著推車接住寶寶所有的愛！",
     targetScore: 500, // 500 分通關
     items: [
       { type: "baby", score: 30, label: "小饅頭萌照卡" },

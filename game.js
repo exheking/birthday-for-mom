@@ -522,7 +522,7 @@
     x: 140,
     width: 146,
     height: 122,
-    speed: 8.5,
+    speed: 10.5,
     scaleX: 1,
     scaleY: 1
   };
@@ -664,9 +664,9 @@
 
       ctx.clearRect(0, 0, canvasCssWidth, canvasCssHeight);
 
-      // 生成掉落物 (節奏放慢舒適，畫面不擁擠，上限3張，防止過密)
+      // 生成掉落物 (節奏輕快順暢，畫面不擁擠，上限3張，防止過密)
       itemSpawnTimer++;
-      if (itemSpawnTimer > 95 && fallingItems.length < 3) {
+      if (itemSpawnTimer > 68 && fallingItems.length < 3) {
         itemSpawnTimer = 0;
         const rand = Math.random();
         let itemData = null;
@@ -745,9 +745,9 @@
           baseX: baseX,
           x: baseX,
           y: -itemData.height / 2 - 12,
-          speed: 1.05 + Math.random() * 0.25, // 悠閒慢速，有充分時間欣賞與反應
+          speed: 1.65 + Math.random() * 0.35, // 速度加快一點點，節奏更輕快有趣
           swayAmp: 10 + Math.random() * 6,
-          swayFreq: 0.014 + Math.random() * 0.005,
+          swayFreq: 0.012 + Math.random() * 0.004,
           phase: Math.random() * Math.PI * 2,
           rot: 0
         });
