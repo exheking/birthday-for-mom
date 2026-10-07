@@ -1737,15 +1737,21 @@
         ticket.className = 'coupon-ticket';
         ticket.id = `coupon-${coupon.id}`;
 
+        const tagHtml = coupon.tag ? `<span class="coupon-tag">${coupon.tag}</span>` : '';
+        const btnLabel = coupon.btnText || '立即使用 ✦';
+
         ticket.innerHTML = `
           <div class="coupon-info">
             <div class="coupon-icon">${coupon.icon || '🎁'}</div>
             <div>
-              <div class="coupon-title">${coupon.title}</div>
+              <div class="coupon-title">
+                ${coupon.title}
+                ${tagHtml}
+              </div>
               <div class="coupon-desc">${coupon.desc}</div>
             </div>
           </div>
-          <button class="coupon-use-btn" data-id="${coupon.id}">立即使用 ✦</button>
+          <button class="coupon-use-btn" data-id="${coupon.id}">${btnLabel}</button>
         `;
 
         const useBtn = ticket.querySelector('.coupon-use-btn');
@@ -1756,12 +1762,13 @@
 
           const stamp = document.createElement('div');
           stamp.className = 'stamp-mark';
-          stamp.textContent = '已兌換';
+          stamp.textContent = coupon.stampText || '已兌換';
           ticket.appendChild(stamp);
 
           triggerConfetti(2800);
           setTimeout(() => {
-            alert(`🎉 恭喜媽咪兌換【${coupon.title}】！\n老公已收到鋼印指令，即刻全力執行，讓老婆好好放鬆！❤️`);
+            const defaultMsg = `🎉 恭喜老婆兌換【${coupon.title}】！\n老公已收到指令，即刻全力執行，讓老婆好好放鬆！❤️`;
+            alert(coupon.alertMsg || defaultMsg);
           }, 150);
         });
 
