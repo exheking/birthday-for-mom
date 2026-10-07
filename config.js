@@ -7,7 +7,7 @@ window.GAME_CONFIG = {
   // 1. 基本資訊
   wifeName: "親愛的老婆",
   celebrationTitle: "生日快樂！Happy Birthday 🎂",
-  themeSubtitle: "祝最棒的媽咪生日快樂！一起重溫我們的生活回憶 🎂",
+  themeSubtitle: "祝親愛的老婆生日快樂！一起重溫我們的生活回憶 🎂",
 
   // 1.5 專屬通關密碼保護 (1009)
   passcode: "1009",

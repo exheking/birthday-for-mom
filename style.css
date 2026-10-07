@@ -592,7 +592,7 @@ body {
 
 #catch-canvas-container {
   width: 100%;
-  height: clamp(300px, 48vh, 410px);
+  height: clamp(380px, 58vh, 480px);
   position: relative;
   background: url('images/home_living_room.jpg') center center / cover no-repeat;
   border-radius: var(--radius-lg);
@@ -1800,7 +1800,7 @@ body {
   }
 
   #catch-canvas-container {
-    height: clamp(285px, 45vh, 350px);
+    height: clamp(380px, 58vh, 480px);
     border-radius: 14px;
   }
 

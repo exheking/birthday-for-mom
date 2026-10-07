@@ -576,7 +576,7 @@
     '🍼 滿滿活力！',
     '🌸 順利得分！',
     '🥰 寶寶笑咪咪！',
-    '🧁 表現太棒了！'
+    '🧁 好厲害！'
   ];
 
   // 卡片與照片尺寸 (Retina 邏輯座標 86x108px，手機適應性優化)
@@ -674,15 +674,15 @@
 
       ctx.clearRect(0, 0, canvasCssWidth, canvasCssHeight);
 
-      // 生成掉落物 (節奏輕快順暢，畫面不擁擠，上限3張，防止過密)
+      // 生成掉落物 (節奏輕快舒適，畫面不擁擠，上限3張，防止過密)
       itemSpawnTimer++;
-      if (itemSpawnTimer > 68 && fallingItems.length < 3) {
+      if (itemSpawnTimer > 76 && fallingItems.length < 3) {
         itemSpawnTimer = 0;
         const rand = Math.random();
         let itemData = null;
 
         if (rand < 0.22) {
-          // 22% 機率：便便小搗蛋 💩 (大幅提高便便出現率，考驗閃避技巧！)
+          // 22% 機率：便便小搗蛋 💩 (考驗閃避技巧！)
           itemData = {
             isBaby: false,
             type: 'poop',
@@ -707,11 +707,11 @@
             height: CARD_H
           };
         } else if (rand < 0.86) {
-          // 10% 機率：超人媽咪光環卡 👑
+          // 10% 機率：幸運皇冠卡 👑
           itemData = {
             isBaby: false,
             type: 'crown',
-            label: '超人媽咪 👑',
+            label: '幸運皇冠 👑',
             score: 50,
             emoji: '👑',
             width: 84,
@@ -755,7 +755,7 @@
           baseX: baseX,
           x: baseX,
           y: -itemData.height / 2 - 12,
-          speed: 1.65 + Math.random() * 0.35, // 速度加快一點點，節奏更輕快有趣
+          speed: 1.35 + Math.random() * 0.25, // 微調回溫柔舒適的掉落速度 (約 1.35~1.60)
           swayAmp: 10 + Math.random() * 6,
           swayFreq: 0.012 + Math.random() * 0.004,
           phase: Math.random() * Math.PI * 2,
@@ -1702,7 +1702,7 @@
       greeting.style.color = '#a64c61';
       greeting.style.marginBottom = '12px';
       greeting.style.fontSize = '16px';
-      greeting.textContent = finaleConf.letterGreeting || '最親愛的老婆、小饅頭最棒的媽咪：';
+      greeting.textContent = finaleConf.letterGreeting || '親愛的老婆：';
       letterBody.appendChild(greeting);
 
       const paragraphs = finaleConf.letterParagraphs || ['生日快樂！愛妳喔！'];
