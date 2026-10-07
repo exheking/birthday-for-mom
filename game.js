@@ -542,6 +542,7 @@
   strollerImg.src = 'images/baby_stroller.png';
 
   // 14 款昊澄（小饅頭）精選成長萌照卡片定義 (500x500 高解析度特寫，全部已核對確保露出可愛正臉，零重複)
+  // 16 款昊澄（小饅頭）精選成長萌照卡片定義 (全部已核對確保露出可愛正臉，零重複)
   const babyCardDefs = [
     { id: 1, src: 'images/baby_card_1.jpg', label: '黃圍兜笑臉 💛', score: 30, note: 1046.5 },
     { id: 2, src: 'images/baby_card_2.jpg', label: '大眼看鏡頭 👀', score: 30, note: 1174.66 },
@@ -556,10 +557,12 @@
     { id: 11, src: 'images/baby_card_11.jpg', label: '沙發開懷笑 😆', score: 30, note: 1318.51 },
     { id: 12, src: 'images/baby_card_12.jpg', label: '露小牙齦大笑 😁', score: 30, note: 987.77 },
     { id: 13, src: 'images/baby_card_13.jpg', label: '傲嬌嘟嘟嘴 👶', score: 30, note: 1396.91 },
-    { id: 14, src: 'images/baby_card_14.jpg', label: '床邊天使笑 👼', score: 30, note: 1046.5 }
+    { id: 14, src: 'images/baby_card_14.jpg', label: '床邊天使笑 👼', score: 30, note: 1046.5 },
+    { id: 15, src: 'images/baby_card_15.jpg', label: '餐椅甜笑 🥣', score: 30, note: 1046.5 },
+    { id: 16, src: 'images/baby_card_16.jpg', label: '餐椅開懷笑 🌟', score: 30, note: 1174.66 }
   ];
 
-  // 預載入 14 張寶寶高清特寫照片
+  // 預載入 16 張寶寶高清特寫照片
   const babyCardImages = {};
   babyCardDefs.forEach(b => {
     const img = new Image();
@@ -568,29 +571,27 @@
   });
 
   const momPraises = [
-    '✨ 媽咪太棒啦！',
-    '💖 小饅頭最愛媽咪！',
-    '👑 宇宙第一超人媽咪！',
-    '🌸 世界上最美的媽咪！',
-    '🍼 小饅頭喝飽飽好開心！',
-    '💕 媽咪辛苦了，我們愛妳！',
-    '🥰 小饅頭給媽咪一個大親親！',
-    '🧁 軟萌小饅頭健康長大！'
+    '✨ 漂亮接住！',
+    '💖 接得好！',
+    '🍼 滿滿活力！',
+    '🌸 順利得分！',
+    '🥰 寶寶笑咪咪！',
+    '🧁 表現太棒了！'
   ];
 
-  // 卡片與照片尺寸加大 (Retina 邏輯座標 90x114px)
-  const CARD_W = 90;
-  const CARD_H = 114;
+  // 卡片與照片尺寸 (Retina 邏輯座標 86x108px，手機適應性優化)
+  const CARD_W = 86;
+  const CARD_H = 108;
 
   let canvasCssWidth = 360;
-  let canvasCssHeight = 430;
+  let canvasCssHeight = 360;
 
   function resizeCatchCanvas() {
     const container = document.getElementById('catch-canvas-container');
     if (!container) return;
     const rect = container.getBoundingClientRect();
     canvasCssWidth = rect.width > 0 ? rect.width : Math.min(window.innerWidth - 40, 580);
-    canvasCssHeight = rect.height > 0 ? rect.height : 430;
+    canvasCssHeight = rect.height > 0 ? rect.height : 360;
 
     const dpr = window.devicePixelRatio || 1;
     canvas.width = Math.round(canvasCssWidth * dpr);
@@ -600,6 +601,15 @@
     ctx.scale(dpr, dpr);
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
+
+    // 手機與窄螢幕自適應推車大小，確保畫面不擁擠且完整可見
+    if (canvasCssWidth < 420) {
+      cart.width = 120;
+      cart.height = 100;
+    } else {
+      cart.width = 146;
+      cart.height = 122;
+    }
 
     cart.x = Math.max(0, Math.min(canvasCssWidth - cart.width, canvasCssWidth / 2 - cart.width / 2));
   }
@@ -938,7 +948,7 @@
         ctx.restore();
 
         // 碰撞檢測 (推車上方接卡區，精準對齊 Q 版推車大籃子口)
-        const cartCatchLine = canvasCssHeight - cart.height - 10 + 52;
+        const cartCatchLine = canvasCssHeight - cart.height - 10 + Math.round(cart.height * 0.42);
         const cardBottom = item.y + item.height / 2;
 
         if (

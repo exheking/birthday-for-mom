@@ -134,6 +134,8 @@ body {
   overflow-x: auto;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .stage-stepper::-webkit-scrollbar {
@@ -590,7 +592,7 @@ body {
 
 #catch-canvas-container {
   width: 100%;
-  height: 430px;
+  height: clamp(300px, 48vh, 410px);
   position: relative;
   background: url('images/home_living_room.jpg') center center / cover no-repeat;
   border-radius: var(--radius-lg);
@@ -1722,4 +1724,153 @@ body {
   font-weight: 800;
   color: var(--theme-text-muted);
   background: rgba(245, 238, 230, 0.85);
+}
+
+/* ============================================================
+   📱 手機螢幕全面響應式自適應優化 (Mobile Responsive)
+   ============================================================ */
+@media (max-width: 600px) {
+  #app-container {
+    padding: 8px 10px 24px;
+  }
+
+  .stage-screen {
+    padding: 16px 12px 18px;
+    border-radius: 18px;
+  }
+
+  .game-header.sticky-header {
+    padding: 8px 10px;
+    gap: 4px;
+  }
+
+  .step-btn {
+    padding: 4px 6px;
+    font-size: 10.5px;
+    gap: 3px;
+  }
+
+  .step-arrow {
+    font-size: 9px;
+    margin: 0 1px;
+    opacity: 0.6;
+  }
+
+  .icon-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+  }
+
+  /* 第一關手機版面緊湊化，確保嬰兒推車 100% 完整落在螢幕可見區域內 */
+  .stage-header-text {
+    margin-bottom: 8px;
+  }
+
+  .stage-header-text h3 {
+    font-size: 16px;
+    margin-bottom: 3px;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  .stage-header-text p {
+    font-size: 12px;
+    line-height: 1.35;
+    padding: 0 4px;
+  }
+
+  .game-hud {
+    padding: 6px 12px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+  }
+
+  .hud-score {
+    font-size: 13px;
+  }
+
+  .hud-score #catch-score {
+    font-size: 15px;
+  }
+
+  .progress-track {
+    width: 100px;
+    height: 8px;
+  }
+
+  #catch-canvas-container {
+    height: clamp(285px, 45vh, 350px);
+    border-radius: 14px;
+  }
+
+  .control-tips {
+    font-size: 11px;
+    margin-top: 6px;
+  }
+
+  /* 第二關翻牌九宮格手機優化 */
+  .cards-grid {
+    gap: 7px;
+    margin: 4px 0 10px;
+  }
+
+  .memory-card {
+    border-radius: 9px;
+  }
+
+  .card-front {
+    padding: 4px 4px 10px 4px;
+  }
+
+  /* 終極彩蛋：兌換券手機排版（標題與描述滿版流暢，按鈕置底右側不擠壓文字） */
+  .coupons-section {
+    margin-top: 16px;
+  }
+
+  .coupons-heading {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .coupon-ticket {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px 14px;
+    gap: 8px;
+  }
+
+  .coupon-info {
+    width: 100%;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .coupon-desc {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .coupon-use-btn {
+    align-self: flex-end;
+    padding: 6px 16px;
+    font-size: 12px;
+    margin-top: 2px;
+  }
+
+  .inline-showcase-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .inline-showcase-photo {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto;
+  }
+
+  .inline-showcase-info {
+    text-align: center;
+  }
 }
