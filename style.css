@@ -541,6 +541,185 @@ body {
   border: 1px solid rgba(16, 185, 129, 0.25);
 }
 
+/* ============================================================
+   🎁 神秘盲盒預覽與 3D 翻轉解鎖特效 (Mystery Blind Box & 3D Flip)
+   ============================================================ */
+
+/* 首頁神秘盲盒卡片 */
+.preview-card.is-mystery {
+  background: rgba(253, 248, 243, 0.72);
+  border: 1.5px dashed rgba(197, 160, 89, 0.45);
+  box-shadow: 0 2px 8px rgba(104, 32, 53, 0.03);
+}
+
+.preview-card.is-mystery:hover {
+  border-color: var(--theme-gold);
+  background: rgba(255, 252, 248, 0.95);
+  transform: translateY(-2px);
+}
+
+.preview-mystery-box {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #fbf2e9 0%, #f5e4d3 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #c28854;
+  animation: pulseMysteryBox 2.5s infinite ease-in-out;
+}
+
+@keyframes pulseMysteryBox {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.1); filter: brightness(1.12); }
+}
+
+.preview-card.is-mystery .preview-title {
+  color: #8c6850;
+}
+
+.preview-card.is-mystery .preview-desc {
+  color: #a89485;
+}
+
+/* 3D 翻轉解鎖卡片容器 */
+.unlock-flip-container {
+  width: 100%;
+  max-width: 420px;
+  margin: 14px auto 0;
+  perspective: 1000px;
+}
+
+.unlock-flip-card {
+  width: 100%;
+  min-height: 250px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.85s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.unlock-flip-card.flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-face {
+  width: 100%;
+  min-height: 250px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: var(--radius-lg);
+  padding: 18px 16px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* 正面：神秘盲盒外觀 */
+.flip-front {
+  background: linear-gradient(135deg, #fffbf5 0%, #fef3c7 50%, #fed7aa 100%);
+  border: 2px dashed rgba(217, 119, 6, 0.5);
+  box-shadow: 0 10px 25px rgba(217, 119, 6, 0.15), inset 0 0 20px rgba(255, 255, 255, 0.6);
+  z-index: 2;
+  cursor: pointer;
+  justify-content: center;
+}
+
+.blindbox-badge {
+  font-size: 11px;
+  font-weight: 800;
+  color: #b45309;
+  letter-spacing: 1px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 3px 12px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(217, 119, 6, 0.25);
+  box-shadow: 0 2px 6px rgba(217, 119, 6, 0.1);
+}
+
+.blindbox-glow-icon {
+  font-size: 52px;
+  margin: 6px 0 10px;
+  animation: floatMysteryIcon 2s infinite ease-in-out;
+  filter: drop-shadow(0 4px 10px rgba(217, 119, 6, 0.3));
+}
+
+@keyframes floatMysteryIcon {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-6px) scale(1.12); }
+}
+
+.blindbox-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #92400e;
+  margin-bottom: 4px;
+}
+
+.blindbox-tip {
+  font-size: 12.5px;
+  color: #b45309;
+}
+
+/* 背面：揭曉的關卡 */
+.flip-back {
+  background: linear-gradient(135deg, #ffffff 0%, #fffcf8 100%);
+  border: 2px solid rgba(197, 160, 89, 0.45);
+  box-shadow: 0 12px 28px rgba(104, 32, 53, 0.12);
+  transform: rotateY(180deg);
+  z-index: 1;
+  justify-content: center;
+}
+
+.unlocked-badge {
+  font-size: 11px;
+  font-weight: 800;
+  color: #ffffff;
+  background: linear-gradient(135deg, #e11d48 0%, #f43f5e 100%);
+  padding: 3px 14px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  letter-spacing: 0.8px;
+  box-shadow: 0 2px 8px rgba(225, 29, 72, 0.35);
+  animation: pulseBadge 1.8s infinite ease-in-out;
+}
+
+@keyframes pulseBadge {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.unlocked-preview-photo {
+  width: 90px;
+  height: 90px;
+  border-radius: 14px;
+  object-fit: cover;
+  border: 2px solid #dfc7af;
+  box-shadow: 0 4px 12px rgba(104, 32, 53, 0.12);
+  margin-bottom: 8px;
+}
+
+.unlocked-title {
+  font-size: 15.5px;
+  font-weight: 800;
+  color: var(--theme-wine);
+  margin-bottom: 4px;
+}
+
+.unlocked-desc {
+  font-size: 12px;
+  color: var(--theme-text-muted);
+  line-height: 1.4;
+  margin-bottom: 12px;
+  padding: 0 8px;
+}
+
 /* ================= 1. 第一關：接住小饅頭所有的愛 ================= */
 .game-hud {
   width: 100%;

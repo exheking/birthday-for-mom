@@ -347,6 +347,37 @@
     }, 2500);
   }
 
+  const stagePreviewDefs = {
+    1: {
+      realTitle: '第 1 關：接住小饅頭所有的愛',
+      realDesc: '推著 Q 版嬰兒車，接住小饅頭可愛照片（500 分通關）！',
+      mysteryTitle: '第 1 關：接住小饅頭所有的愛',
+      mysteryDesc: '推著 Q 版嬰兒車，接住小饅頭可愛照片（500 分通關）！',
+      mysteryIcon: '🍼'
+    },
+    2: {
+      realTitle: '第 2 關：母子時光記憶寶盒',
+      realDesc: '翻開 3 大篇章記憶卡牌，重溫 18 段溫馨生活日常！',
+      mysteryTitle: '第 2 關：🔒 神秘生活篇章',
+      mysteryDesc: '？？？（通關第 1 關解密新篇章）',
+      mysteryIcon: '❓'
+    },
+    3: {
+      realTitle: '第 3 關：拼出最美母子時光',
+      realDesc: '拼出媽咪與小饅頭 120 天紀念合照，解鎖終極驚喜！',
+      mysteryTitle: '第 3 關：🔒 未知時光挑戰',
+      mysteryDesc: '？？？（通關第 2 關解密新關卡）',
+      mysteryIcon: '❓'
+    },
+    4: {
+      realTitle: '終極彩蛋：生日信件與專屬好禮兌換券',
+      realDesc: '拆開火漆信封，領取 4 張專屬心意好禮兌換券！',
+      mysteryTitle: '終極彩蛋：🔒 專屬於妳的心意秘密',
+      mysteryDesc: '？？？（通關第 3 關解密終極好禮）',
+      mysteryIcon: '🎁'
+    }
+  };
+
   function updateStepperUI() {
     const stepBtns = document.querySelectorAll('.step-btn');
     stepBtns.forEach(btn => {
@@ -373,22 +404,60 @@
           badge.textContent = stageIdx;
         }
       }
+
+      // 導航列文字神秘化：未解鎖時顯示 ？？？
+      const label = btn.querySelector('.step-label');
+      const realLabel = btn.dataset.realLabel || (label ? label.textContent : '');
+      if (label) {
+        if (stageIdx === 0 || stageIdx <= unlockedMaxStage) {
+          label.textContent = realLabel;
+          btn.title = `第 ${stageIdx} 關：${realLabel}`;
+        } else {
+          label.textContent = '？？？';
+          btn.title = `第 ${stageIdx} 關：🔒 待解鎖`;
+        }
+      }
     });
 
-    // 更新首頁 Preview 卡片狀態
+    // 更新首頁 Preview 卡片狀態（神秘盲盒與解鎖展示）
     const previewCards = document.querySelectorAll('.preview-card');
     previewCards.forEach(card => {
       const stageIdx = parseInt(card.dataset.previewStage, 10);
+      const def = stagePreviewDefs[stageIdx];
+      const titleEl = card.querySelector('.preview-title');
+      const descEl = card.querySelector('.preview-desc');
+      const badgeBox = card.querySelector('.preview-mystery-box');
+      const badgeImg = card.querySelector('.preview-badge-img');
       const statusEl = card.querySelector('.preview-status');
-      if (statusEl) {
-        statusEl.classList.remove('status-ready', 'status-locked', 'status-done');
-        if (stageIdx < unlockedMaxStage) {
-          statusEl.classList.add('status-done');
-          statusEl.textContent = '已珍藏 ✓';
-        } else if (stageIdx === unlockedMaxStage) {
-          statusEl.classList.add('status-ready');
-          statusEl.textContent = '進入 ➔';
-        } else {
+
+      if (stageIdx <= unlockedMaxStage) {
+        // 已解鎖：移除盲盒，顯示真實照片與標題
+        card.classList.remove('is-mystery');
+        if (badgeBox) badgeBox.style.display = 'none';
+        if (badgeImg) badgeImg.style.display = 'block';
+        if (titleEl && def) titleEl.textContent = def.realTitle;
+        if (descEl && def) descEl.textContent = def.realDesc;
+
+        if (statusEl) {
+          statusEl.classList.remove('status-ready', 'status-locked', 'status-done');
+          if (stageIdx < unlockedMaxStage) {
+            statusEl.classList.add('status-done');
+            statusEl.textContent = '已珍藏 ✓';
+          } else {
+            statusEl.classList.add('status-ready');
+            statusEl.textContent = '進入 ➔';
+          }
+        }
+      } else {
+        // 未解鎖：維持神秘盲盒狀態
+        card.classList.add('is-mystery');
+        if (badgeBox) badgeBox.style.display = 'flex';
+        if (badgeImg) badgeImg.style.display = 'none';
+        if (titleEl && def) titleEl.textContent = def.mysteryTitle;
+        if (descEl && def) descEl.textContent = def.mysteryDesc;
+
+        if (statusEl) {
+          statusEl.classList.remove('status-ready', 'status-locked', 'status-done');
           statusEl.classList.add('status-locked');
           statusEl.textContent = '🔒 待解鎖';
         }
@@ -495,6 +564,16 @@
         switchStage(0);
       });
     }
+
+    // 輕觸盲盒卡片即可立即翻開
+    document.querySelectorAll('.unlock-flip-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (!e.target.closest('button')) {
+          card.classList.add('flipped');
+          playMusicBoxNote(587.33, 0.45, 0.15);
+        }
+      });
+    });
 
     // 初始化狀態
     updateStepperUI();
@@ -1200,11 +1279,22 @@
     unlockedMaxStage = Math.max(unlockedMaxStage, 2);
     updateStepperUI();
 
-    // 原地展開通關成就卡，絕不跳出阻擋彈窗！
+    // 原地展開通關成就卡與 3D 盲盒解鎖
     const clearBanner = document.getElementById('s1-clear-banner');
     if (clearBanner) {
       clearBanner.style.display = 'flex';
       clearBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // 觸發第 2 關 3D 盲盒翻開解密動畫
+    const flipCard = document.getElementById('s1-flip-card');
+    if (flipCard) {
+      flipCard.classList.remove('flipped');
+      setTimeout(() => {
+        flipCard.classList.add('flipped');
+        playMusicBoxNote(587.33, 0.45, 0.15);
+        triggerConfetti(2200);
+      }, 1000);
     }
   }
 
@@ -1577,8 +1667,19 @@
       levelCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
-    if (s2NextBtn) {
-      s2NextBtn.style.display = 'block';
+    // 顯示並觸發解鎖第 3 關的 3D 盲盒翻轉動畫
+    const s2UnlockContainer = document.getElementById('s2-unlock-container');
+    const s2FlipCard = document.getElementById('s2-flip-card');
+    if (s2UnlockContainer) {
+      s2UnlockContainer.style.display = 'block';
+      if (s2FlipCard) {
+        s2FlipCard.classList.remove('flipped');
+        setTimeout(() => {
+          s2FlipCard.classList.add('flipped');
+          playMusicBoxNote(587.33, 0.45, 0.15);
+          triggerConfetti(2200);
+        }, 1000);
+      }
     }
   }
 
@@ -1684,6 +1785,17 @@
       if (clearBanner) {
         clearBanner.style.display = 'flex';
         clearBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      // 觸發終極彩蛋 3D 盲盒翻開解密動畫
+      const flipCard = document.getElementById('s3-flip-card');
+      if (flipCard) {
+        flipCard.classList.remove('flipped');
+        setTimeout(() => {
+          flipCard.classList.add('flipped');
+          playMusicBoxNote(659.25, 0.5, 0.2);
+          triggerConfetti(3500);
+        }, 1000);
       }
     }
   }
@@ -2032,6 +2144,12 @@
 
     // 初始化終章情書與兌換券
     initFinale();
+
+    // 暴露輔助函式供測試與除錯
+    window.winStage1 = winStage1;
+    window.handleChapterWin = handleChapterWin;
+    window.checkPuzzleWin = checkPuzzleWin;
+    window.switchStage = switchStage;
   }
 
   window.addEventListener('DOMContentLoaded', initGame);

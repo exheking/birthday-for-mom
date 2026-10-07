@@ -56,29 +56,29 @@
   <!-- 頂部吸頂關卡步進導航列 (Stage Stepper) -->
   <header class="game-header sticky-header" id="main-header">
     <nav class="stage-stepper" id="stage-stepper">
-      <button class="step-btn active" data-stage="0" title="首頁">
+      <button class="step-btn active" data-stage="0" title="首頁" data-real-label="首頁">
         <span class="step-icon">🏠</span>
         <span class="step-label">首頁</span>
       </button>
       <div class="step-arrow">›</div>
-      <button class="step-btn" data-stage="1" title="第 1 關：接小饅頭">
+      <button class="step-btn" data-stage="1" title="第 1 關：接小饅頭" data-real-label="接小饅頭">
         <span class="step-badge">1</span>
         <span class="step-label">接小饅頭</span>
       </button>
       <div class="step-arrow">›</div>
-      <button class="step-btn locked" data-stage="2" title="第 2 關：母子回憶 (未解鎖)">
+      <button class="step-btn locked" data-stage="2" title="第 2 關：未解鎖" data-real-label="母子回憶">
         <span class="step-badge">2</span>
-        <span class="step-label">母子回憶</span>
+        <span class="step-label">？？？</span>
       </button>
       <div class="step-arrow">›</div>
-      <button class="step-btn locked" data-stage="3" title="第 3 關：拼圖 (未解鎖)">
+      <button class="step-btn locked" data-stage="3" title="第 3 關：未解鎖" data-real-label="最美拼圖">
         <span class="step-badge">3</span>
-        <span class="step-label">最美拼圖</span>
+        <span class="step-label">？？？</span>
       </button>
       <div class="step-arrow">›</div>
-      <button class="step-btn locked" data-stage="4" title="終極彩蛋：專屬好禮 (未解鎖)">
+      <button class="step-btn locked" data-stage="4" title="終極彩蛋：未解鎖" data-real-label="專屬好禮">
         <span class="step-badge">🎁</span>
-        <span class="step-label">專屬好禮</span>
+        <span class="step-label">？？？</span>
       </button>
     </nav>
     <div class="header-controls">
@@ -101,44 +101,54 @@
         <p class="welcome-subtitle" id="welcome-sub">祝親愛的老婆生日快樂！一起重溫我們的生活回憶 🎂</p>
       </div>
 
-      <div class="stage-preview-list">
+      <div class="stage-preview-list" id="stage-preview-list">
+        <!-- 第 1 關 (已開放) -->
         <div class="preview-card" data-preview-stage="1">
           <div class="preview-badge">
             <img src="images/preview_stage1.jpg" alt="第 1 關 小饅頭萌照" class="preview-badge-img">
           </div>
           <div class="preview-info">
-            <h4>第 1 關：接住小饅頭所有的愛</h4>
-            <p>推著 Q 版嬰兒車，接住小饅頭可愛照片（500 分通關）！</p>
+            <h4 class="preview-title">第 1 關：接住小饅頭所有的愛</h4>
+            <p class="preview-desc">推著 Q 版嬰兒車，接住小饅頭可愛照片（500 分通關）！</p>
           </div>
           <span class="preview-status status-ready">進入 ➔</span>
         </div>
-        <div class="preview-card" data-preview-stage="2">
+
+        <!-- 第 2 關 (初始盲盒狀態) -->
+        <div class="preview-card is-mystery" data-preview-stage="2">
           <div class="preview-badge">
-            <img src="images/preview_stage2.jpg" alt="第 2 關 母子時光" class="preview-badge-img">
+            <div class="preview-mystery-box">❓</div>
+            <img src="images/preview_stage2.jpg" alt="第 2 關 母子時光" class="preview-badge-img" style="display:none;">
           </div>
           <div class="preview-info">
-            <h4>第 2 關：母子時光記憶寶盒</h4>
-            <p>翻開 3 大篇章記憶卡牌，重溫 18 段溫馨生活日常！</p>
+            <h4 class="preview-title">第 2 關：🔒 神秘生活篇章</h4>
+            <p class="preview-desc">？？？（通關第 1 關解密新篇章）</p>
           </div>
           <span class="preview-status status-locked">🔒 待解鎖</span>
         </div>
-        <div class="preview-card" data-preview-stage="3">
+
+        <!-- 第 3 關 (初始盲盒狀態) -->
+        <div class="preview-card is-mystery" data-preview-stage="3">
           <div class="preview-badge">
-            <img src="images/preview_stage3.jpg" alt="第 3 關 拼圖合照" class="preview-badge-img">
+            <div class="preview-mystery-box">❓</div>
+            <img src="images/preview_stage3.jpg" alt="第 3 關 拼圖合照" class="preview-badge-img" style="display:none;">
           </div>
           <div class="preview-info">
-            <h4>第 3 關：拼出最美母子時光</h4>
-            <p>拼出媽咪與小饅頭 120 天紀念合照，解鎖終極驚喜！</p>
+            <h4 class="preview-title">第 3 關：🔒 未知時光挑戰</h4>
+            <p class="preview-desc">？？？（通關第 2 關解密新關卡）</p>
           </div>
           <span class="preview-status status-locked">🔒 待解鎖</span>
         </div>
-        <div class="preview-card" data-preview-stage="4">
+
+        <!-- 第 4 關 (初始盲盒狀態) -->
+        <div class="preview-card is-mystery" data-preview-stage="4">
           <div class="preview-badge">
-            <img src="images/preview_stage4.jpg" alt="終極彩蛋 登記甜蜜照" class="preview-badge-img">
+            <div class="preview-mystery-box">🎁</div>
+            <img src="images/preview_stage4.jpg" alt="終極彩蛋 登記甜蜜照" class="preview-badge-img" style="display:none;">
           </div>
           <div class="preview-info">
-            <h4>終極彩蛋：生日信件與專屬好禮兌換券</h4>
-            <p>拆開火漆信封，領取 4 張專屬心意好禮兌換券！</p>
+            <h4 class="preview-title">終極彩蛋：🔒 專屬於妳的心意秘密</h4>
+            <p class="preview-desc">？？？（通關第 3 關解密終極好禮）</p>
           </div>
           <span class="preview-status status-locked">🔒 待解鎖</span>
         </div>
@@ -180,7 +190,7 @@
       </div>
       <p class="control-tips">📱 手指左右滑動推車 / 💻 使用鍵盤左右鍵移動</p>
 
-      <!-- 第一關通關後原地展開的客廳回憶卡與通關按鈕 -->
+      <!-- 第一關通關後原地展開的客廳回憶卡與 3D 盲盒解鎖翻開組件 -->
       <div id="s1-clear-banner" class="clear-banner" style="display: none;">
         <div class="clear-banner-card">
           <div class="banner-badge">🎉 500 分達成！客廳回憶已珍藏 ✨</div>
@@ -188,9 +198,29 @@
           <h4 class="banner-title">🏡 我們的溫馨育兒小天地</h4>
           <p class="banner-caption">客廳的地墊、沙發、散落的玩具……這裡寫滿了妳日夜陪伴小饅頭長大的點點滴滴。親愛的媽咪，辛苦了，我們愛妳！❤️</p>
         </div>
-        <button class="action-btn next-stage-btn" id="s1-next-btn">
-          太棒了！解鎖並進入第 2 關母子回憶錄 ➔
-        </button>
+
+        <!-- ✨ 3D 盲盒解鎖翻開組件 (解鎖第 2 關) ✨ -->
+        <div class="unlock-flip-container" id="s1-unlock-container">
+          <div class="unlock-flip-card" id="s1-flip-card">
+            <!-- 正面：神秘盲盒 -->
+            <div class="flip-face flip-front">
+              <div class="blindbox-badge">✨ MYSTERY UNLOCK ✨</div>
+              <div class="blindbox-glow-icon">❓</div>
+              <h4 class="blindbox-title">正在解開下一關盲盒...</h4>
+              <p class="blindbox-tip">通關成功！即將揭曉下一篇章 🎁</p>
+            </div>
+            <!-- 背面：翻開揭曉的第 2 關 -->
+            <div class="flip-face flip-back">
+              <div class="unlocked-badge">🎉 NEW STAGE UNLOCKED！</div>
+              <img src="images/preview_stage2.jpg" alt="第 2 關 母子時光" class="unlocked-preview-photo">
+              <h4 class="unlocked-title">第 2 關：母子時光記憶寶盒 🧸</h4>
+              <p class="unlocked-desc">翻開 3 大篇章記憶卡牌，重溫 18 段溫馨生活日常！</p>
+              <button class="action-btn next-stage-btn" id="s1-next-btn">
+                出發挑戰第 2 關 ➔
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -276,12 +306,30 @@
         <div class="complete-btn-group">
           <button class="action-btn next-chapter-btn" id="s2-next-chapter-btn">切換下一篇章 ➔</button>
         </div>
-      </div>
 
-      <!-- 解鎖進入第 3 關大按鈕 (配對完成後解鎖顯示) -->
-      <button class="action-btn next-stage-btn" id="s2-next-btn" style="display: none; margin-top: 18px;">
-        太棒了！解鎖並進入第 3 關最美拼圖 ➔
-      </button>
+        <!-- ✨ 3D 盲盒解鎖翻開組件 (解鎖第 3 關) ✨ -->
+        <div class="unlock-flip-container" id="s2-unlock-container" style="display: none; margin-top: 14px;">
+          <div class="unlock-flip-card" id="s2-flip-card">
+            <!-- 正面：神秘盲盒 -->
+            <div class="flip-face flip-front">
+              <div class="blindbox-badge">✨ MYSTERY UNLOCK ✨</div>
+              <div class="blindbox-glow-icon">❓</div>
+              <h4 class="blindbox-title">正在解開下一關盲盒...</h4>
+              <p class="blindbox-tip">通關成功！即將揭曉未知拼圖挑戰 🧩</p>
+            </div>
+            <!-- 背面：翻開揭曉的第 3 關 -->
+            <div class="flip-face flip-back">
+              <div class="unlocked-badge">🎉 NEW STAGE UNLOCKED！</div>
+              <img src="images/preview_stage3.jpg" alt="第 3 關 拼圖合照" class="unlocked-preview-photo">
+              <h4 class="unlocked-title">第 3 關：拼出最美母子時光 🧩</h4>
+              <p class="unlocked-desc">拼出媽咪與小饅頭 120 天紀念合照，解鎖終極驚喜！</p>
+              <button class="action-btn next-stage-btn" id="s2-next-btn">
+                出發挑戰第 3 關 ➔
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ================= 3. 第三關：母子拼圖 (Jigsaw Puzzle) ================= -->
@@ -304,15 +352,35 @@
         <button class="icon-btn" id="puzzle-auto-btn" style="font-size: 12px; width: auto; border-radius: 12px; padding: 4px 10px;" title="遇到困難點這裡">💡 一鍵通關</button>
       </div>
 
-      <!-- 拼圖完成提示 -->
+      <!-- 拼圖完成提示與 3D 終極彩蛋翻轉解鎖 -->
       <div id="s3-clear-banner" class="clear-banner" style="display: none; margin-top: 16px;">
         <div class="clear-banner-card">
           <div class="banner-badge">🎉 拼圖完美完成！❤️</div>
           <p class="banner-caption" style="margin-bottom: 0;">太棒了！看著妳抱著小饅頭幸福微笑的模樣，就是我們家最美的風景！</p>
         </div>
-        <button class="action-btn next-stage-btn" id="s3-next-btn" style="margin-top: 15px;">
-          💖 全部通關！解鎖老公與小饅頭的專屬心意信件 💌 ➔
-        </button>
+
+        <!-- ✨ 3D 盲盒解鎖翻開組件 (解鎖終極彩蛋) ✨ -->
+        <div class="unlock-flip-container" id="s3-unlock-container" style="margin-top: 14px;">
+          <div class="unlock-flip-card" id="s3-flip-card">
+            <!-- 正面：神秘禮物盒 -->
+            <div class="flip-face flip-front">
+              <div class="blindbox-badge">✨ GRAND FINALE UNLOCK ✨</div>
+              <div class="blindbox-glow-icon">🎁</div>
+              <h4 class="blindbox-title">正在解開終極秘密好禮...</h4>
+              <p class="blindbox-tip">恭喜拼圖全部解開！終極心意即將呈現 💌</p>
+            </div>
+            <!-- 背面：翻開揭曉的終極彩蛋 -->
+            <div class="flip-face flip-back">
+              <div class="unlocked-badge" style="background: linear-gradient(135deg, #a855f7, #ec4899);">🎉 終極彩蛋正式解密！</div>
+              <img src="images/preview_stage4.jpg" alt="終極彩蛋 登記甜蜜照" class="unlocked-preview-photo">
+              <h4 class="unlocked-title">終極彩蛋：生日信件與心意好禮 💌</h4>
+              <p class="unlocked-desc">拆開火漆信封，領取專屬於親愛老婆的心意好禮兌換券！</p>
+              <button class="action-btn finale-btn" id="s3-next-btn" style="margin-top: 10px;">
+                拆開生日信件與領取好禮 🎁 ➔
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
