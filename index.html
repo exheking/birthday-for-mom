@@ -2,7 +2,11 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#fcf8f3">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="format-detection" content="telephone=no">
   <title>給親愛的老婆・生日快樂 🎂</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -415,6 +419,54 @@
           </div>
         </div>
 
+        <!-- 📸 2026 生日專屬通關拍立得紀念卡 (Keepsake Certificate) -->
+        <div class="keepsake-section" id="keepsake-section">
+          <div class="keepsake-card" id="keepsake-card">
+            <div class="keepsake-header-ribbon">
+              <span>👑 2026 OFFICIAL BIRTHDAY PASS 👑</span>
+            </div>
+            
+            <div class="keepsake-polaroid-wrap">
+              <div class="keepsake-polaroid-frame">
+                <img src="images/puzzle_mom_baby_sq.jpg" alt="最美母子時光" class="keepsake-main-photo">
+                <div class="keepsake-inset-photo-wrap">
+                  <img src="images/mom_baby_round2_6_wedding.jpg" alt="登記甜蜜留念" class="keepsake-inset-photo">
+                </div>
+              </div>
+              <div class="keepsake-polaroid-caption">
+                親愛的老婆・生日快樂 Happy Birthday 🎂
+              </div>
+            </div>
+
+            <div class="keepsake-body">
+              <div class="keepsake-trophy-badge">🏆 全通關成就認證</div>
+              <h3 class="keepsake-title">最棒的老婆・最溫柔的媽咪</h3>
+              <ul class="keepsake-stats-list">
+                <li><span class="stat-icon">👶</span> 500 分接滿小饅頭所有的愛</li>
+                <li><span class="stat-icon">📖</span> 18 段溫馨生活日常全部珍藏</li>
+                <li><span class="stat-icon">🧩</span> 120 天母子甜蜜拼圖 100% 完美完成</li>
+                <li><span class="stat-icon">🎁</span> 今日大餐 & 眼鏡券等 4 大專屬好禮生效中</li>
+              </ul>
+              
+              <div class="keepsake-footer-row">
+                <div class="keepsake-date-block">
+                  <span class="date-label">紀念日期</span>
+                  <span class="date-val">2026.10.09 🎂</span>
+                </div>
+                <div class="keepsake-stamp-wrap">
+                  <div class="keepsake-red-stamp">
+                    昊澄 & 老公<br>真心守護
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="keepsake-screenshot-tip">
+              <span>📸 截圖留念・珍藏這份美好日常 💖</span>
+            </div>
+          </div>
+        </div>
+
         <!-- 溫馨尾聲 -->
         <div class="finale-footer-card">
           <div class="footer-heart">💖</div>
@@ -427,6 +479,39 @@
     </section>
 
   </main>
+
+  <!-- ================= 🎁 心意好禮已領取・高奢專屬慶祝彈窗 ================= -->
+  <div id="gift-claim-modal" class="custom-modal-overlay" style="display: none;">
+    <div class="custom-modal-card gift-modal-card">
+      <div class="modal-confetti-badge">✨ 🎁 ✨</div>
+      <div class="gift-modal-ribbon">心意好禮已領取・指令生效</div>
+      <div class="gift-modal-icon" id="gift-modal-icon">🍽️</div>
+      <h3 class="gift-modal-title" id="gift-modal-title">【今日大餐券】</h3>
+      <p class="gift-modal-msg" id="gift-modal-msg">爸爸全力搞定寶寶，請老婆專心享用今日美味大餐！❤️</p>
+      <div class="gift-modal-seal-row">
+        <div class="gift-promise-stamp">
+          老公承諾<br>即刻生效
+        </div>
+      </div>
+      <button class="action-btn gift-modal-close-btn" id="gift-modal-close-btn">
+        太棒了！好好享受今天 💖
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= 🔍 高畫質回憶照片全螢幕欣賞彈窗 (Lightbox) ================= -->
+  <div id="photo-lightbox-modal" class="custom-modal-overlay photo-lightbox-overlay" style="display: none;">
+    <div class="photo-lightbox-card">
+      <button class="lightbox-close-btn" id="lightbox-close-btn" title="關閉">✕</button>
+      <div class="lightbox-img-wrap">
+        <img src="" alt="回憶照片" id="lightbox-img" class="lightbox-img">
+      </div>
+      <div class="lightbox-caption-wrap">
+        <div class="lightbox-date" id="lightbox-date">日期</div>
+        <p class="lightbox-caption" id="lightbox-caption">背後的故事小語</p>
+      </div>
+    </div>
+  </div>
 
   <!-- 背景音樂播放器 -->
   <audio id="bgm-player" loop preload="auto"></audio>

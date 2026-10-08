@@ -183,6 +183,189 @@
   }
 
   // ==========================================
+  // 1.5 手機觸覺微震動反饋 (Haptic Feedback)
+  // ==========================================
+  function triggerHaptic(type = 'light') {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      try {
+        if (type === 'light') {
+          navigator.vibrate(14);
+        } else if (type === 'medium') {
+          navigator.vibrate(28);
+        } else if (type === 'warning') {
+          navigator.vibrate([30, 40, 30]);
+        } else if (type === 'success') {
+          navigator.vibrate([40, 50, 40, 80]);
+        }
+      } catch (e) {}
+    }
+  }
+
+  // ==========================================
+  // 高奢心意好禮慶祝彈窗 (Gift Claim Modal)
+  // ==========================================
+  function showGiftClaimModal(coupon) {
+    const modal = document.getElementById('gift-claim-modal');
+    if (!modal) return;
+
+    const iconEl = document.getElementById('gift-modal-icon');
+    const titleEl = document.getElementById('gift-modal-title');
+    const msgEl = document.getElementById('gift-modal-msg');
+
+    if (iconEl) iconEl.textContent = coupon.icon || '🎁';
+    if (titleEl) titleEl.textContent = `【${coupon.title}】`;
+    if (msgEl) {
+      if (coupon.alertMsg) {
+        const parts = coupon.alertMsg.split('\n');
+        msgEl.textContent = parts.length > 1 ? parts[1] : coupon.alertMsg;
+      } else {
+        msgEl.textContent = '老公已收到指令，即刻全力執行，請老婆好好放鬆、盡情享受！❤️';
+      }
+    }
+
+    modal.style.display = 'flex';
+    void modal.offsetWidth;
+    modal.classList.add('visible');
+    triggerHaptic('success');
+    triggerConfetti(3200);
+  }
+
+  function closeGiftClaimModal() {
+    const modal = document.getElementById('gift-claim-modal');
+    if (modal) {
+      modal.classList.remove('visible');
+      setTimeout(() => {
+        if (!modal.classList.contains('visible')) {
+          modal.style.display = 'none';
+        }
+      }, 200);
+    }
+  }
+
+  // ==========================================
+  // 回憶照片全螢幕高清放大檢視 (Photo Lightbox)
+  // ==========================================
+  function openPhotoLightbox(src, dateText, captionText) {
+    const modal = document.getElementById('photo-lightbox-modal');
+    const img = document.getElementById('lightbox-img');
+    const dateEl = document.getElementById('lightbox-date');
+    const captionEl = document.getElementById('lightbox-caption');
+
+    if (!modal || !img) return;
+
+    img.src = src;
+    if (dateEl) dateEl.textContent = dateText || '';
+    if (captionEl) captionEl.textContent = captionText || '';
+
+    modal.style.display = 'flex';
+    void modal.offsetWidth;
+    modal.classList.add('visible');
+    playFlipSound();
+    triggerHaptic('light');
+  }
+
+  function closePhotoLightbox() {
+    const modal = document.getElementById('photo-lightbox-modal');
+    if (modal) {
+      modal.classList.remove('visible');
+      setTimeout(() => {
+        if (!modal.classList.contains('visible')) {
+          modal.style.display = 'none';
+        }
+      }, 200);
+    }
+  }
+
+  function initModals() {
+    // 禮物慶祝彈窗關閉按鈕與背景遮罩
+    const giftCloseBtn = document.getElementById('gift-modal-close-btn');
+    const giftModal = document.getElementById('gift-claim-modal');
+    if (giftCloseBtn) {
+      giftCloseBtn.addEventListener('click', closeGiftClaimModal);
+    }
+    if (giftModal) {
+      giftModal.addEventListener('click', (e) => {
+        if (e.target === giftModal) {
+          closeGiftClaimModal();
+        }
+      });
+    }
+
+    // 照片燈箱關閉按鈕與背景遮罩
+    const lightboxCloseBtn = document.getElementById('lightbox-close-btn');
+    const lightboxModal = document.getElementById('photo-lightbox-modal');
+    if (lightboxCloseBtn) {
+      lightboxCloseBtn.addEventListener('click', closePhotoLightbox);
+    }
+    if (lightboxModal) {
+      lightboxModal.addEventListener('click', (e) => {
+        if (e.target === lightboxModal) {
+          closePhotoLightbox();
+        }
+      });
+    }
+
+    // ESC 鍵關閉所有 Modal
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeGiftClaimModal();
+        closePhotoLightbox();
+      }
+    });
+
+    // 綁定第三關拼圖提示圖點擊開啟燈箱
+    const puzzleHintImg = document.getElementById('puzzle-hint-img');
+    if (puzzleHintImg) {
+      puzzleHintImg.style.cursor = 'pointer';
+      puzzleHintImg.addEventListener('click', () => {
+        openPhotoLightbox(
+          puzzleHintImg.src,
+          '2025.10.19・小饅頭 120 天紀念',
+          '抱著妳最心愛的小寶貝，溫馨動人的母子甜笑時光 💖'
+        );
+      });
+    }
+
+    // 綁定 Stage 2 Showcase 卡片點擊放大
+    const showcaseCard = document.getElementById('showcase-card');
+    if (showcaseCard) {
+      showcaseCard.style.cursor = 'pointer';
+      showcaseCard.addEventListener('click', () => {
+        const photo = document.getElementById('showcase-photo');
+        const date = document.getElementById('showcase-date');
+        const caption = document.getElementById('showcase-caption');
+        if (photo && photo.src) {
+          openPhotoLightbox(photo.src, date ? date.textContent : '', caption ? caption.textContent : '');
+        }
+      });
+    }
+
+    // 綁定 Stage 4 紀念拍立得照片點擊放大
+    const keepsakeMain = document.querySelector('.keepsake-main-photo');
+    if (keepsakeMain) {
+      keepsakeMain.style.cursor = 'pointer';
+      keepsakeMain.addEventListener('click', () => {
+        openPhotoLightbox(
+          keepsakeMain.src,
+          '2025.10.19・120 天幸福紀念',
+          '看著妳抱著小饅頭幸福微笑的模樣，就是我們家最美的風景！❤️'
+        );
+      });
+    }
+    const keepsakeInset = document.querySelector('.keepsake-inset-photo');
+    if (keepsakeInset) {
+      keepsakeInset.style.cursor = 'pointer';
+      keepsakeInset.addEventListener('click', () => {
+        openPhotoLightbox(
+          keepsakeInset.src,
+          '2025・結婚登記甜蜜留念',
+          '兩個人拿著手板在背板前合照，正式開啟了一起生活的新階段 ❤️'
+        );
+      });
+    }
+  }
+
+  // ==========================================
   // 2. 背景微光粒子畫布 (Ambient Bokeh Canvas)
   // ==========================================
   const ambientCanvas = document.getElementById('ambient-canvas');
@@ -1047,14 +1230,18 @@
 
           if (item.type === 'crown') {
             playCrownSound();
+            triggerHaptic('medium');
           } else if (item.type === 'poop') {
             playPoopSound();
+            triggerHaptic('warning');
           } else if (item.isBaby && item.note) {
             initAudio();
             playMusicBoxNote(item.note, 0.5, 0.14);
             setTimeout(() => playMusicBoxNote(item.note * 1.25, 0.45, 0.1), 70);
+            triggerHaptic('light');
           } else {
             playCatchSound();
+            triggerHaptic('light');
           }
 
           ripples.push({
@@ -1273,6 +1460,7 @@
     isStage1Active = false;
     if (catchAnimFrame) cancelAnimationFrame(catchAnimFrame);
     playVictoryFanfare();
+    triggerHaptic('success');
     triggerConfetti(3500);
 
     // 解鎖第 2 關
@@ -1467,6 +1655,7 @@
       thumb.addEventListener('click', () => {
         if (unlockedCardIds.has(card.id)) {
           showInlineMemory(card);
+          openPhotoLightbox(card.image, card.date, card.caption);
         }
       });
 
@@ -1578,6 +1767,7 @@
           matchedPairs++;
           document.getElementById('matched-pairs-count').textContent = matchedPairs;
           playMatchSound();
+          triggerHaptic('light');
           triggerConfetti(1500);
 
           // 解鎖卡片
@@ -1632,6 +1822,7 @@
 
   function handleChapterWin() {
     playVictoryFanfare();
+    triggerHaptic('success');
     triggerConfetti(3500);
 
     // 通關後解鎖第 3 關！
@@ -1747,6 +1938,7 @@
 
   function handlePuzzleClick(gridPos, imgUrl) {
     playPuzzleSwapSound();
+    triggerHaptic('light');
 
     if (selectedPieceIndex === null) {
       selectedPieceIndex = gridPos;
@@ -1775,6 +1967,7 @@
   function checkPuzzleWin() {
     if (isPuzzleSolved()) {
       playVictoryFanfare();
+      triggerHaptic('success');
       triggerConfetti(4500);
 
       // 解鎖第 4 關 (Grand Finale)
@@ -1830,6 +2023,7 @@
     if (sealBtn) {
       sealBtn.onclick = () => {
         playSealOpenSound();
+        triggerHaptic('medium');
         triggerConfetti(2000);
         sealBtn.style.transform = 'scale(1.22) rotate(15deg)';
         setTimeout(() => {
@@ -1869,6 +2063,7 @@
         const useBtn = ticket.querySelector('.coupon-use-btn');
         useBtn.addEventListener('click', () => {
           playStampSound();
+          triggerHaptic('success');
           ticket.classList.add('used');
           useBtn.style.display = 'none';
 
@@ -1879,9 +2074,8 @@
 
           triggerConfetti(2800);
           setTimeout(() => {
-            const defaultMsg = `🎉 恭喜老婆兌換【${coupon.title}】！\n老公已收到指令，即刻全力執行，讓老婆好好放鬆！❤️`;
-            alert(coupon.alertMsg || defaultMsg);
-          }, 150);
+            showGiftClaimModal(coupon);
+          }, 200);
         });
 
         couponsList.appendChild(ticket);
@@ -2145,11 +2339,16 @@
     // 初始化終章情書與兌換券
     initFinale();
 
+    // 初始化彈窗與燈箱互動
+    initModals();
+
     // 暴露輔助函式供測試與除錯
     window.winStage1 = winStage1;
     window.handleChapterWin = handleChapterWin;
     window.checkPuzzleWin = checkPuzzleWin;
     window.switchStage = switchStage;
+    window.showGiftClaimModal = showGiftClaimModal;
+    window.openPhotoLightbox = openPhotoLightbox;
   }
 
   window.addEventListener('DOMContentLoaded', initGame);
