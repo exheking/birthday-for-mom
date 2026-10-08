@@ -553,8 +553,8 @@
       mysteryIcon: '❓'
     },
     4: {
-      realTitle: '終極彩蛋：生日信件與專屬好禮兌換券',
-      realDesc: '拆開火漆信封，領取 4 張專屬心意好禮兌換券！',
+      realTitle: '終極彩蛋：專屬生日影片與好禮兌換券',
+      realDesc: '欣賞專屬生日紀念影片，領取 4 張心意好禮兌換券！',
       mysteryTitle: '終極彩蛋：🔒 專屬於妳的心意秘密',
       mysteryDesc: '？？？（通關第 3 關解密終極好禮）',
       mysteryIcon: '🎁'
@@ -684,6 +684,9 @@
     } else if (stageIdx === 4) {
       triggerConfetti(4000);
       playVictoryFanfare();
+      setTimeout(() => {
+        playBirthdayVideo();
+      }, 400);
     }
   }
 
@@ -730,12 +733,15 @@
       });
     }
 
-    // 第 3 關通關後「解鎖老公與小饅頭專屬心意信件」按鈕
+    // 第 3 關通關後「播放專屬生日影片並領取好禮」按鈕
     const s3NextBtn = document.getElementById('s3-next-btn');
     if (s3NextBtn) {
       s3NextBtn.addEventListener('click', () => {
         unlockedMaxStage = Math.max(unlockedMaxStage, 4);
         switchStage(4);
+        setTimeout(() => {
+          playBirthdayVideo();
+        }, 150);
       });
     }
 
@@ -2084,6 +2090,126 @@
   }
 
   // ==========================================
+  // 8.4 專屬生日紀念影片特映系統 (Birthday Video Cinema)
+  // ==========================================
+  let isVideoPlaying = false;
+
+  function initBirthdayVideo() {
+    const video = document.getElementById('birthday-video');
+    const unmuteBtn = document.getElementById('video-unmute-btn');
+    const completeBanner = document.getElementById('video-complete-banner');
+    const replayBtn = document.getElementById('replay-video-btn');
+    const scrollToCouponsBtn = document.getElementById('scroll-to-coupons-btn');
+    const bgmAudio = document.getElementById('bgm-player');
+
+    if (!video) return;
+
+    // 播放事件：自動暫停背景音樂，讓影片聲音純粹動人
+    video.addEventListener('play', () => {
+      isVideoPlaying = true;
+      if (bgmAudio && !bgmAudio.paused) {
+        bgmAudio.pause();
+      }
+      if (replayBtn) replayBtn.style.display = 'none';
+      if (completeBanner) completeBanner.style.display = 'none';
+    });
+
+    // 暫停事件
+    video.addEventListener('pause', () => {
+      isVideoPlaying = false;
+    });
+
+    // 影片播放完畢事件：慶祝特效 + 溫柔自動順暢滑動至禮物券
+    video.addEventListener('ended', () => {
+      isVideoPlaying = false;
+      playVictoryFanfare();
+      triggerConfetti(4000);
+      triggerHaptic('success');
+
+      if (completeBanner) completeBanner.style.display = 'block';
+      if (replayBtn) replayBtn.style.display = 'inline-block';
+
+      // 溫柔引導平滑滾動至信件與心意好禮兌換券專區
+      setTimeout(() => {
+        const target = document.getElementById('envelope-box') || document.querySelector('.coupons-section');
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        const couponsSec = document.querySelector('.coupons-section');
+        if (couponsSec) {
+          couponsSec.classList.remove('highlight-pulse');
+          void couponsSec.offsetWidth;
+          couponsSec.classList.add('highlight-pulse');
+        }
+      }, 1200);
+    });
+
+    // 靜音解鎖按鈕點擊
+    if (unmuteBtn) {
+      unmuteBtn.addEventListener('click', () => {
+        video.muted = false;
+        unmuteBtn.style.display = 'none';
+        showToast('🔊 已開啟影片原聲！');
+      });
+    }
+
+    // 前往領取好禮券按鈕點擊
+    if (scrollToCouponsBtn) {
+      scrollToCouponsBtn.addEventListener('click', () => {
+        const target = document.getElementById('envelope-box') || document.querySelector('.coupons-section');
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        const couponsSec = document.querySelector('.coupons-section');
+        if (couponsSec) {
+          couponsSec.classList.remove('highlight-pulse');
+          void couponsSec.offsetWidth;
+          couponsSec.classList.add('highlight-pulse');
+        }
+      });
+    }
+
+    // 重播影片按鈕點擊
+    if (replayBtn) {
+      replayBtn.addEventListener('click', () => {
+        playBirthdayVideo();
+        const videoCard = document.getElementById('birthday-video-card');
+        if (videoCard) {
+          videoCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    }
+  }
+
+  function playBirthdayVideo() {
+    const video = document.getElementById('birthday-video');
+    const unmuteBtn = document.getElementById('video-unmute-btn');
+    const bgmAudio = document.getElementById('bgm-player');
+    if (!video) return;
+
+    if (bgmAudio && !bgmAudio.paused) {
+      bgmAudio.pause();
+    }
+
+    video.currentTime = 0;
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        // 成功有聲播放
+        if (unmuteBtn) unmuteBtn.style.display = video.muted ? 'block' : 'none';
+      }).catch(err => {
+        console.log('Video autoplay with sound deferred, falling back to muted autoplay:', err);
+        video.muted = true;
+        video.play().then(() => {
+          if (unmuteBtn) unmuteBtn.style.display = 'block';
+        }).catch(e => {
+          console.log('Video autoplay requires manual user click:', e);
+        });
+      });
+    }
+  }
+
+  // ==========================================
   // 8.5 專屬通關密碼保護系統 (Passcode: 1009)
   // ==========================================
   function initLockScreen() {
@@ -2339,6 +2465,9 @@
     // 初始化終章情書與兌換券
     initFinale();
 
+    // 初始化專屬生日影片特映系統
+    initBirthdayVideo();
+
     // 初始化彈窗與燈箱互動
     initModals();
 
@@ -2349,6 +2478,7 @@
     window.switchStage = switchStage;
     window.showGiftClaimModal = showGiftClaimModal;
     window.openPhotoLightbox = openPhotoLightbox;
+    window.playBirthdayVideo = playBirthdayVideo;
   }
 
   window.addEventListener('DOMContentLoaded', initGame);

@@ -148,7 +148,7 @@
         <div class="preview-card is-mystery" data-preview-stage="4">
           <div class="preview-badge">
             <div class="preview-mystery-box">🎁</div>
-            <img src="images/preview_stage4.jpg" alt="終極彩蛋 登記甜蜜照" class="preview-badge-img" style="display:none;">
+            <img src="images/video_poster.jpg" alt="終極彩蛋 生日影片" class="preview-badge-img" style="display:none;">
           </div>
           <div class="preview-info">
             <h4 class="preview-title">終極彩蛋：🔒 專屬於妳的心意秘密</h4>
@@ -376,11 +376,11 @@
             <!-- 背面：翻開揭曉的終極彩蛋 -->
             <div class="flip-face flip-back">
               <div class="unlocked-badge" style="background: linear-gradient(135deg, #a855f7, #ec4899);">🎉 終極彩蛋正式解密！</div>
-              <img src="images/preview_stage4.jpg" alt="終極彩蛋 登記甜蜜照" class="unlocked-preview-photo">
-              <h4 class="unlocked-title">終極彩蛋：生日信件與心意好禮 💌</h4>
-              <p class="unlocked-desc">拆開火漆信封，領取專屬於親愛老婆的心意好禮兌換券！</p>
+              <img src="images/video_poster.jpg" alt="終極彩蛋 生日影片首映" class="unlocked-preview-photo">
+              <h4 class="unlocked-title">終極彩蛋：專屬生日影片首映 🎬</h4>
+              <p class="unlocked-desc">通關成功！為親愛老婆特別準備的生日紀念影片，即將為妳放映 ❤️</p>
               <button class="action-btn finale-btn" id="s3-next-btn" style="margin-top: 10px;">
-                拆開生日信件與領取好禮 🎁 ➔
+                播放專屬生日影片 🎬 ➔
               </button>
             </div>
           </div>
@@ -388,12 +388,59 @@
       </div>
     </section>
 
-    <!-- ================= 4. 終極彩蛋：情書與兌換券 (Grand Finale) ================= -->
+    <!-- ================= 4. 終極彩蛋：生日影片、情書與兌換券 (Grand Finale) ================= -->
     <section class="stage-screen" id="stage-4">
       <div class="finale-container">
         <div class="section-tag" style="background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%); color: #fff;">Grand Finale</div>
         <h2 class="celebration-title">🎉 生日快樂，親愛的老婆 ❤️</h2>
         <p class="celebration-sub">謝謝妳為家裡的付出・祝妳生日快樂！</p>
+
+        <!-- 🎬 專屬生日特映影院區塊 (Birthday Cinema Section) -->
+        <div class="birthday-video-section" id="birthday-video-section">
+          <div class="birthday-video-card" id="birthday-video-card">
+            <div class="video-header-row">
+              <span class="video-badge">🎬 SPECIAL BIRTHDAY FILM</span>
+              <span class="video-duration-tag">24s 專屬特輯</span>
+            </div>
+            
+            <h3 class="video-title">為親愛老婆特別製作・生日影片 ❤️</h3>
+            <p class="video-desc">記錄我們家最甜蜜溫馨的時光，謝謝妳為家裡的付出！</p>
+
+            <div class="video-player-wrapper" id="video-wrapper">
+              <video 
+                id="birthday-video" 
+                class="birthday-video-element"
+                playsinline 
+                webkit-playsinline 
+                preload="auto" 
+                poster="images/video_poster.jpg"
+                src="videos/birthday_video.mp4"
+                controls
+              ></video>
+              
+              <!-- 靜音解鎖浮動小膠囊 (以防手機瀏覽器自動靜音) -->
+              <button class="video-unmute-btn" id="video-unmute-btn" style="display: none;">
+                🔊 點擊開啟影片聲音
+              </button>
+            </div>
+
+            <!-- 影片播放完畢慶祝引導條 -->
+            <div class="video-complete-banner" id="video-complete-banner" style="display: none;">
+              <div class="complete-badge">🎉 專屬影片欣賞完畢！心意好禮已就緒 ❤️</div>
+              <p class="complete-sub">往下領取專屬心意好禮兌換券 💌</p>
+            </div>
+
+            <!-- 控制與跳轉好禮券按鈕 -->
+            <div class="video-action-bar">
+              <button class="action-btn next-to-coupons-btn" id="scroll-to-coupons-btn">
+                前往領取專屬好禮券 🎁 ➔
+              </button>
+              <button class="action-btn replay-video-btn" id="replay-video-btn" style="display: none;">
+                再看一次影片 🔄
+              </button>
+            </div>
+          </div>
+        </div>
 
         <!-- 儀式感火漆信封 -->
         <div class="envelope-container" id="envelope-box">

@@ -179,8 +179,14 @@ window.GAME_CONFIG = {
     completedMessage: "完成拼圖了！4 個月 120 天紀念，祝老婆生日快樂！❤️"
   },
 
-  // 6. 終極彩蛋：生日信件與專屬好禮兌換券 (The Grand Finale)
+  // 6. 終極彩蛋：生日影片、生日信件與專屬好禮兌換券 (The Grand Finale)
   finale: {
+    video: {
+      url: "videos/birthday_video.mp4",
+      poster: "images/video_poster.jpg",
+      title: "為親愛老婆特別製作・生日影片 ❤️",
+      desc: "記錄我們家最甜蜜溫馨的時光，謝謝妳為家裡的付出！"
+    },
     envelopeTitle: "老婆親啟 💌",
     letterGreeting: "親愛的老婆：",
     letterParagraphs: [
