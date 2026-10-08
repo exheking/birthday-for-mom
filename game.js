@@ -827,7 +827,7 @@
     { id: 13, src: 'images/baby_card_13.jpg', label: '傲嬌嘟嘟嘴 👶', score: 30, note: 1396.91 },
     { id: 14, src: 'images/baby_card_14.jpg', label: '床邊天使笑 👼', score: 30, note: 1046.5 },
     { id: 15, src: 'images/baby_card_15.jpg', label: '餐椅甜笑 🥣', score: 30, note: 1046.5 },
-    { id: 16, src: 'images/baby_card_16.jpg', label: '餐椅開懷笑 🌟', score: 30, note: 1174.66 }
+    { id: 16, src: 'images/baby_card_16.jpg', label: '調皮吐舌笑 😋', score: 30, note: 1318.51 }
   ];
 
   // 預載入 16 張寶寶高清特寫照片

@@ -154,9 +154,9 @@ window.GAME_CONFIG = {
           },
           {
             id: "3-5",
-            image: "images/stage2_l3_5.jpg",
-            date: "躺床開懷笑瞇眼",
-            caption: "心情很好的時候，躺在床上直接笑瞇了眼睛。"
+            image: "images/baby_tongue_smile.jpg",
+            date: "調皮吐舌開懷笑 😋",
+            caption: "看著鏡頭開心地吐出小舌頭大笑，古靈精怪又充滿朝氣的模樣，融化了全家人的心！"
           },
           {
             id: "3-6",
