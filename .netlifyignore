@@ -1,0 +1,6 @@
+# Exclude raw local assets from Netlify deployment
+photo/
+scratch/
+.git/
+.github/
+*.log
